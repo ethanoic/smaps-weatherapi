@@ -7,6 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
+import com.weatherapi.data.StationRespository;
 import com.weatherapi.models.StationModel;
 
 /*
@@ -16,20 +17,21 @@ import com.weatherapi.models.StationModel;
 @Path("stations")
 public class Station {
 	
+	private StationRespository repo = new StationRespository();
+	
 	/*
-	 * GET /stations
+	 * GET /stations?pagesize=5&pagenumber=1
 	 */
-	@GET
+	@GET 
 	@Produces({"application/json; qs=0.9", "application/xml; qs=0.5"})
-	public Response GetAllStations() {
+	public Response GetAllStations(@QueryParam("pagesize") int pageSize, @QueryParam("pagenumber") int pageNumber) {
 		
-		List<StationModel> stations = new ArrayList();
-		StationModel station_1 = new StationModel("RedHill", "Redhill Road", 1000);
-		StationModel station_2 = new StationModel("Tampines", "Tampines Central", 700);
-		stations.add(station_1);
-		stations.add(station_2);
-		GenericEntity<List<StationModel>> result = new GenericEntity<List<StationModel>>(stations) {};
-		return Response.ok().entity(result).build();
+		
+		List<StationModel> result = repo.GetStations(pageSize, pageNumber);
+		
+		//GenericEntity<List<StationModel>> result = new GenericEntity<List<StationModel>>(stations) {};
+		
+		return Response.ok().entity(new GenericEntity<List<StationModel>>(result){}).build();
 		/*
 		List stations = new ArrayList();
 		stations.add("REDHILL");
