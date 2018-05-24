@@ -20,14 +20,22 @@ public class Station {
 	 * GET /stations
 	 */
 	@GET
-	@Produces("application/json")
+	@Produces({"application/json; qs=0.9", "application/xml; qs=0.5"})
 	public Response GetAllStations() {
-		// LATER WHEN WE USE JACKSON to convert object to json and vice versa
+		
+		List<StationModel> stations = new ArrayList();
+		StationModel station_1 = new StationModel("RedHill", "Redhill Road", 1000);
+		StationModel station_2 = new StationModel("Tampines", "Tampines Central", 700);
+		stations.add(station_1);
+		stations.add(station_2);
+		GenericEntity<List<StationModel>> result = new GenericEntity<List<StationModel>>(stations) {};
+		return Response.ok().entity(result).build();
+		/*
 		List stations = new ArrayList();
 		stations.add("REDHILL");
 		stations.add("TAMPINES");
 		return Response.ok().entity(new GenericEntity<List>(stations) {}).build();
-		//return Response.ok("Get All Stations").build();
+		*/
 	}
 	
 	/*
